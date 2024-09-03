@@ -1,0 +1,175 @@
+Vale. vamos a ver aqui un metodo que tiene un servicio para realizar una peticion Http:
+
+
+private base_url: string = "http://localhost:8080/api/v1";
+
+getUsuarioPorCorreo(correo: string): Observable<any> 
+  {
+    const endpoint = `${this.base_url}/usuarios/${correo}`;
+    return this.http.get<any>(endpoint)     
+  }
+
+
+1 - Explicacion del Codigo
+
+    1 - getUsuarioPorCorreo: Es la firma del metodo, su nombre vaya
+    2- (correo: string): Este metodo toma un parametro de tipo string que tendra el nombre de "correo" dentro del metodo
+    3 - Observable <any>: Este metodo devuelve un Observable <any>, ¿que es esto?
+
+      3.1 - Un Observable es una manera de reflejar datos asincronos, como lo pueden ser las respuestas de una solititud Http
+      3.2 - Que sea <any> quiere decir que el tipo de dato puede ser de cualquier tipo
+      3.3 - Si se sabe qué va a devolver la solicitud, en lugar de que el tipo de dato del Observable sea <any>, puede ser aquello que devolvera, por ejemplo: Observable<Usuario>.
+
+      Ir al punto 6 para explorar mas los Observables.
+
+    4 - const endpoint = `${this.base_url}/usuarios/${correo}`: Se constituye una URL dinamica usando el valor de correo, es un string. Un endpoint podría ser por ejemplo:
+
+        endpoint = http://localhost:8080/api/v1/usuarios/carlos@casado.com
+
+        Ojo que se usan backticks ``, no comillas dobles " ni normales '.
+
+    5 - return this.http.get<any>(endpoint): Se realiza una solicitud Http tipo GET al endpoint contruido que devuelve <any> y por el return es eso lo que devuelve el metodo
+
+        5.1 - Metodo POST
+
+            Un metodo post envia datos al servidor, por tanto en la peticion, ademas del endpoint hay que enviar los datos:
+
+               crearUsuario(datosUsuario: any): Observable<any> 
+                {
+                    const endpoint = `${this.base_url}/usuarios`;
+                    return this.http.post<any>(endpoint, datosUsuario);
+                }
+
+
+        5.2 - Metodo PUT
+
+            Un metodo put actualiza un recurso existente, por lo que, ademas de los datos para actualizarlo, necesita la forma de acceder al recurso concreto:
+
+            actualizarUsuario(correo: string, datosActualizados: any): Observable<any> 
+            {
+                const endpoint = `${this.base_url}/usuarios/${correo}`;
+                return this.http.put<any>(endpoint, datosActualizados);
+            }
+
+
+        5.3 - Metodo DELETE
+
+            Un metodo DELETE borra un recurso existente, por lo que no necesitara mas parametros que la forma de acceder a ese recurso:
+
+            eliminarUsuario(correo: string): Observable<any> 
+            {
+                const endpoint = `${this.base_url}/usuarios/${correo}`;
+                return this.http.delete<any>(endpoint);
+            }
+
+2 - Observables
+
+    Un Observable es un concepto fundamental en la programacion reactiva.
+    Es una forma de manejar flujos de datos asíncronos, como eventos de usuario, solicitudes HTTP, intervalos de tiempo... entre otros.
+    Se podrian destacar dos propiedades:
+
+        - Asincronía: No hace nada hasta que algo no se suscribe a el, mas adelante veremos el tema del suscribe.
+        - Multivalor: Emite múltiples valores a lo largo del tiempo.
+
+    En el contexto de una solicitud HTTP, un Observable emite un valor cuando la respuesta llega desde el servidor.
+    Y para acceder a sus datos hay que suscribirse a ellos, ¿como? Pues así:
+
+    this.getUsuarioPorCorreo('carles@correo.com').subscribe(response => {
+    console.log(response);
+    });
+
+    En este ejemplo, el código dentro de la función subscribe se ejecutará cuando la respuesta del servidor esté disponible.
+    El codigo dentro de la funcion subscribe es, en este caso, console.log(response).
+    Es decir, se ejecuta el metodo, se suscribe al observable que devuelve y cuando haya una respuesta, se imprime por consola.
+
+    Más cosas, si sabemos el tipo de dato que una peticion Http va a devolver, podemos hacer que el Observable sea de ese tipo de dato, por ejemplo:
+
+        Metodo:
+
+            getUsuarioPorCorreo(correo: string): Observable<RespuestaUsuario> 
+            {
+                const endpoint = `${this.base_url}/usuarios/${correo}`;
+                return this.http.get<RespuestaUsuario>(endpoint);
+            }
+
+        Respuesta de la peticion HTTP:
+
+            {
+                "respuesta": "Usuario encontrado",
+                "usuarios": 
+                [
+                    {
+                        "id": 3,
+                        "nombre": "Carles",
+                        "contrasenya": "soyCarles",
+                        "correo": "CARLES@CORREO.COM",
+                        "fechaCreacion": "2024-09-02T10:56:51.669635",
+                        "esAdmin": false
+                    }
+                ]
+            }
+
+    Para ello, en el TypeScript es recomendable, pero no obligatorio, definir una interfaz para aquello que forma el Observable:
+
+            interface Usuario 
+            {
+                id: number;
+                nombre: string;
+                contrasenya: string;
+                correo: string;
+                fechaCreacion: string;  // Puede ser un Date si lo parseas más adelante
+                esAdmin: boolean;
+            }
+
+            interface RespuestaUsuario 
+            {
+                respuesta: string;
+                usuarios: Usuario[];
+            }
+
+    Finalmente, para trabajar con el Observable respuesta, sea del tipo que sea el Observable, hay que suscribirse a el.
+    Una vez suscrito, se puede acceder a sus parametros:
+
+        this.getUsuarioPorCorreo('carles@correo.com').subscribe(response => {
+        console.log(response.respuesta); // "Usuario encontrado"
+    
+            if (response.usuarios.length > 0) 
+            {
+                const usuario = response.usuarios[0];
+                console.log(usuario.nombre);  // "Carles"
+                console.log(usuario.correo);  // "CARLES@CORREO.COM"
+                console.log(usuario.esAdmin); // false
+            }
+        });
+
+        En este codigo:
+
+            - response.respuesta: accede al parametro respuesta de la respuesta que se obtiene al llamar al metodo getUsuarioPorCorreo, es decir, a "Usuario encontrado".
+            - response.usuarios: accede al parametro usuarios de la respuesta del metodo. Es un array de usuarios, y puedes acceder al primer usuario usando response.usuarios[0].
+
+    Flujo de un Observable y la suscripcion
+
+        1 - Método que devuelve un Observable:
+
+        Tienes un método que realiza una operación asincrónica (por ejemplo, una solicitud HTTP) y devuelve un Observable que emitirá los resultados de esa operación.
+
+        2 - Llamada al método en otro lugar del código:
+
+        En otra parte de tu código, llamas a este método porque necesitas los datos que eventualmente emitirá (por ejemplo, la respuesta de la solicitud HTTP).
+
+        3 - Suscripción al Observable:
+
+        Como el método devuelve un Observable, necesitas suscribirte a él usando .subscribe() para poder recibir los datos que este emita.
+
+        4 - Recepción de la información cuando el Observable emite datos:
+
+        Una vez que te suscribes, el Observable permanecerá "inactivo" hasta que tenga datos listos para emitir. Cuando la operación asincrónica se completa (por ejemplo, la solicitud HTTP recibe una respuesta del servidor), el Observable emite esos datos.
+
+        5 - Ejecución del código dentro de subscribe:
+
+        Cuando el Observable emite los datos, el callback que pasaste a .subscribe() se ejecuta. En este callback, response contiene los datos emitidos (es decir, los resultados de la operación asincrónica). Aquí es donde procesas esos datos.
+
+
+
+
+

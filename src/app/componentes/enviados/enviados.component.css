@@ -1,0 +1,9 @@
+.contenedor {
+    display: flex;
+    flex-direction: column; /* Alinea los elementos en columna */
+    align-items: center; /* Centra los elementos horizontalmente */
+    justify-content: center; /* Centra los elementos verticalmente */
+    height: 100vh; /* Hace que el contenedor ocupe toda la altura de la ventana */
+    gap: 16px; /* Espacio vertical entre los elementos */
+}
+

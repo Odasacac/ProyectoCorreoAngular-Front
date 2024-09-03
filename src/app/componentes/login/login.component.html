@@ -1,0 +1,28 @@
+<div class="form-container">
+
+  <h2 class="form-title">Inicia sesión</h2>
+
+  <form [formGroup]="formulario" class="paraFormulario" (ngSubmit)="onSubmit()"> 
+    <mat-form-field appearance="fill">
+      <mat-label>Correo</mat-label>
+      <input matInput formControlName="correo" maxlength="50" required matInput placeholder="usuario@dominio.x">
+      <mat-error *ngIf="formulario.get('correo')?.hasError('required')">El correo es obligatorio.</mat-error>
+      <mat-error *ngIf="formulario.get('correo')?.hasError('correo')">El correo electrónico no es válido.</mat-error>
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>Contraseña</mat-label>
+      <input matInput type="password" formControlName="contrasenya" maxlength="100" required matInput placeholder="Escriba la contraseña">
+      <mat-error *ngIf="formulario.get('contrasenya')?.hasError('required')">La contraseña es obligatoria.</mat-error>
+    </mat-form-field>
+  
+    <button mat-raised-button class="mb-3 boton" color="primary" type="submit">Iniciar sesión</button>
+  </form>
+
+  <button mat-raised-button class="mb-3 boton" color="primary" (click)="goToSignup()">Crear una cuenta</button>
+
+  <p *ngIf="correoNoExiste">Correo o contraseña erronea - 1</p>
+  <p *ngIf="contrasenyaErronea">Correo o contraseña erronea - 2</p>
+</div>
+
+

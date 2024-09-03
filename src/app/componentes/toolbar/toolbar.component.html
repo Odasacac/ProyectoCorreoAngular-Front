@@ -1,0 +1,20 @@
+<mat-toolbar color="primary">
+
+  <button mat-button *ngIf="loginCorrecto" [matMenuTriggerFor]="menuToolbar">Menu*</button>
+  <mat-menu #menuToolbar="matMenu"> 
+    <button mat-menu-item (click)="goToBandejaDeEntrada()">Bandeja de entrada</button>
+    <button mat-menu-item (click)="goToBandejaDeSalida()">Bandeja de salida</button>
+    <button mat-menu-item (click)="goToPapelera()">Papelera</button>
+  </mat-menu> 
+
+
+    <span>CCASolutions - Email</span>
+
+    <span class="spacer"></span>
+
+  <button mat-button *ngIf="loginCorrecto" (click)="logout()">Logout</button>
+  <button mat-button>Ayuda</button>
+  <button mat-button>About</button>
+  <button mat-button>Salir*</button>
+</mat-toolbar>
+

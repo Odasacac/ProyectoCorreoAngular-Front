@@ -1,0 +1,51 @@
+/* Contenedor principal con alineación vertical centrada */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Ajusta esto según el alto que necesites */
+    text-align: center;
+  }
+  
+  /* Estilo general para el formulario */
+  .paraFormulario {
+    width: 100%;
+    max-width: 500px; /* Puedes ajustar el ancho máximo según tus necesidades */
+    margin-bottom: 10px; /* Reducido para acercar los botones */
+  }
+  
+  /* Alineación y estilo de los campos del formulario */
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  /* Estilo para los botones dentro del formulario y fuera del formulario */
+  .boton {
+    width: 100%;
+    max-width: 200px; /* Puedes ajustar el ancho máximo del botón según tus necesidades */
+    margin: 8px 0; /* Reducido para acercar los botones */
+  }
+  
+  /* Estilo común para los botones */
+  button.mat-raised-button {
+    font-size: 16px; /* Tamaño de fuente del botón */
+    padding: 12px 24px; /* Espaciado interno del botón */
+    border-radius: 4px; /* Bordes redondeados del botón */
+    text-transform: uppercase; /* Texto en mayúsculas */
+    box-shadow: none; /* Sin sombra en el botón */
+  }
+  
+  /* Estilo para el botón fuera del formulario */
+  .form-container > button.mat-raised-button {
+    margin: 8px 0; /* Margen reducido para acercar los botones */
+  }
+  
+  /* Estilo para el párrafo de confirmación */
+  p {
+    margin-top: 20px;
+    color: green; /* Color del texto para indicar éxito */
+    font-size: 16px;
+  }
+  

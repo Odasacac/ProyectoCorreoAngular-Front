@@ -1,0 +1,5 @@
+.mensaje-content {
+    white-space: pre-wrap; /* Mantiene los saltos de línea */
+    word-wrap: break-word; /* Ajusta las palabras largas */
+    overflow-wrap: break-word; /* Ajusta las palabras largas */
+}

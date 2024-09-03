@@ -1,0 +1,61 @@
+Cosas importantes de Angular 18
+
+1 - Componentes Standalone
+
+    Ya no hay modulos, solo componentes Standalone.
+    Es decir, los componentes tendran un atributo Standalone: true y un atributo imports: []
+    Ejemplo:
+
+    @Component
+    ({
+        selector: 'app-login',
+        standalone: true,
+        imports: [CommonModule, MaterialModule, ReactiveFormsModule],
+        templateUrl: './login.component.html',
+        styleUrls: ['./login.component.css']
+    })
+
+    Standalone ha de ser true.
+    Y en los imports se ponen todos los modulos o componentes que ese componente necesite.
+
+2 - Http Client
+
+    En este proyecto uso HttpClientModule aunque este deprecated.
+
+    Para usar el HttpClient, es decir realizar peticiones Http, hay que:
+
+    2.1 - Inyectar la dependencia en el Servicio que la use
+
+        private http = inject(HttpClient);
+
+    2.2 - En el main.ts, poner el provideHttpClient, withFetch
+
+        import { bootstrapApplication } from '@angular/platform-browser';
+        import { AppComponent } from './app/app.component';
+        import { importProvidersFrom } from '@angular/core';
+        import { RouterModule } from '@angular/router';
+        import { routes } from './app/app.routes';
+        import { provideHttpClient, withFetch } from '@angular/common/http';
+
+        bootstrapApplication(AppComponent, {
+        providers: 
+        [
+            importProvidersFrom(RouterModule.forRoot(routes)),
+            provideHttpClient(withFetch())
+        ]
+        }).catch(err => console.error(err));
+
+    2.3 - Importar HttpClientModule en el componente raiz 
+
+        imports: [RouterOutlet, ToolbarComponent, HttpClientModule, MatSidenavModule],
+
+3 - Rutas
+
+    Se usa el archivo app.routes, ahi se ponen las Rutas
+
+    Luego hay que ir al app.config.ts y en providers poner:
+
+        provideRouter(routes),
+
+    Y luego lo mitico de <router-outlet> en el html del componente que se quiera
+

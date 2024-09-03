@@ -1,0 +1,24 @@
+<div class="form-container">
+
+  <h2 class="form-title">Envía un mensaje</h2>
+<form [formGroup]="formulario" class="paraFormulario" (ngSubmit)="onSubmit()">
+
+    <mat-form-field appearance="fill">
+        <mat-label>Destinatario</mat-label>
+        <input matInput formControlName="destinatario" required placeholder="usuario@dominio.x">
+        <mat-error *ngIf="formulario.get('destinatario')?.hasError('required')">El destinatario es obligatorio</mat-error>
+        <mat-error *ngIf="formulario.get('destinatario')?.hasError('email')">El correo electrónico no es válido</mat-error>
+      </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Mensaje</mat-label>
+        <textarea matInput formControlName="contenido" maxlength="254" required placeholder="Máximo 254 caracteres"></textarea>
+         <mat-error *ngIf="formulario.get('contenido')?.hasError('required')">El mensaje es obligatorio</mat-error> 
+    </mat-form-field>
+    <button mat-raised-button class="mb-3" color="primary" type="submit">Enviar</button>
+      
+  <button mat-raised-button (click)="reiniciarFormulario()">Borrar</button>
+</form>
+
+<button mat-raised-button class="mb-3 boton" color="primary" (click)="closeDialog()">Volver</button>
+</div>

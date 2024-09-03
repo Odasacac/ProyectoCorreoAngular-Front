@@ -1,0 +1,44 @@
+<div class="form-container">
+
+    <h2 class="form-title">Crea una cuenta</h2>
+  
+    <form [formGroup]="formulario" class="paraFormulario" (ngSubmit)="onSubmit()"> 
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" maxlength="100" required placeholder="Introduzca el nombre">
+        <mat-error *ngIf="formulario.get('nombre')?.hasError('required')">El nombre es obligatorio.</mat-error>
+        <mat-error *ngIf="formulario.get('nombre')?.hasError('nombre')">El nombre no es válido.</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Correo</mat-label>
+        <input matInput formControlName="correo" maxlength="50" required placeholder="usuario@dominio.x">
+        <mat-error *ngIf="formulario.get('correo')?.hasError('required')">El correo es obligatorio.</mat-error>
+        <mat-error *ngIf="formulario.get('correo')?.hasError('correo')">El correo electrónico no es válido.</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="contrasenya" maxlength="100" required placeholder="Escriba la contraseña">
+        <mat-error *ngIf="formulario.get('contrasenya')?.hasError('required')">La contraseña es obligatoria.</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Repita la contraseña</mat-label>
+        <input matInput type="password" formControlName="contrasenyaR" maxlength="100" required placeholder="Repita la contraseña">
+        <mat-error *ngIf="formulario.get('contrasenyaR')?.hasError('required')">La contraseña es obligatoria.</mat-error>
+        <mat-error *ngIf="contrasenyasNoCoinciden">Las contraseñas no coinciden.</mat-error>
+      </mat-form-field>
+  
+      <button mat-raised-button class="mb-3 boton" color="primary" type="submit">Crear cuenta</button>
+    </form>
+  
+    <button mat-raised-button class="mb-3 boton" color="primary" (click)="goToLogIn()">Volver a Iniciar Sesión</button>
+  
+    <p *ngIf="correoExistente">Correo ya existente</p>
+    <p *ngIf="errorAlAlmacenarFromBack">Error al almacenar el usuario - 1</p>
+    <p *ngIf="errorAlAlmacenar">Error al almacenar el usuario - 2</p>
+    <p *ngIf="contrasenyasNoCoinciden">Las contraseñas no coinciden</p>
+  </div>
+  
