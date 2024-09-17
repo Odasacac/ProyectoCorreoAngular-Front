@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MaterialModule } from '../../otros/angularmaterial/angularmaterial.module';
 import { Subscription } from 'rxjs';
@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { Usuario } from '../../interfaces/usuario';
 
 @Component({
   selector: 'app-toolbar',
@@ -25,24 +26,36 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   
 
   private datosCompartidos = inject(DatoscompartidosService);
-  private subscriptions: Subscription = new Subscription();
+  private subscripcion: Subscription = new Subscription()
   private router = inject(Router);
-  private cdr = inject(ChangeDetectorRef);
 
   ngOnInit() 
   {  
-    const idUsuarioSubscription = this.datosCompartidos.idUsuario$.subscribe(id => {
-      this.idUsuarioLogueado = id;
-      this.loginCorrecto = id !== null && id !== 0; // Actualizar loginCorrecto basado en el id
-    });
-  
-    this.subscriptions.add(idUsuarioSubscription);
+      const usuarioObserver = 
+      {
+        next: (usuario: Usuario) =>
+        {
+          const usuarioObservado = this.datosCompartidos.getUsuario();
+          if(usuarioObservado!.id != 0)
+          {
+            this.loginCorrecto=true;
+          }
+        },
+        error: (error: any) =>
+        {
 
+        },
+        complete: () =>
+        {
+
+        }
+      }
+      this.subscripcion=this.datosCompartidos.usuario$.subscribe(usuarioObserver);
   }
 
   ngOnDestroy() 
   {   
-    this.subscriptions.unsubscribe();
+    this.subscripcion.unsubscribe();
   }
 
 
@@ -62,16 +75,11 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   }
 
 
-
-
   logout() 
   {
-    this.datosCompartidos.setIdUsuario(0);
+    this.datosCompartidos.resetUsuario();
     this.loginCorrecto = false;
-    console.log('Login correcto:', this.loginCorrecto); // Verifica si cambia a false
-    this.router.navigate(['/login']).then(() => {
-      this.cdr.detectChanges(); // Forzar la detección de cambios
-    });
+    this.router.navigate(['/login']);
   }
   
 }

@@ -14,24 +14,21 @@ export class UsuariosService {
   private base_url: string = "http://localhost:8080/api/v1";
 
   
-  comprobarLogIn(body: any): Observable<any> {
+  comprobarLogIn(body: any): Observable<any> 
+  {
     const endpoint = `${this.base_url}/usuarios/login`;
     return this.http.post<any>(endpoint, body);
   }
 
-  guardarUsuario(body: any): Observable<string> {
+  guardarUsuario(body: any): Observable<any> {
     const endpoint = `${this.base_url}/usuarios`;
-    return this.http.post(endpoint, body, { responseType: 'text' });
+    return this.http.post(endpoint, body);
   }
 
-  getUsuarioPorIdParaTabla(id: number): Observable<{ nombre: string, correo: string }> {
+  getUsuarioPorId(id: number): Observable<any> 
+  {
     const endpoint = `${this.base_url}/usuarios/${id}`;
-    return this.http.get<any>(endpoint).pipe(
-      map(response => ({
-        nombre: response.usuarios[0].nombre,
-        correo: response.usuarios[0].correo.toLowerCase()
-      }))
-    );
+    return this.http.get<any>(endpoint);
   }
 
   getUsuarioPorCorreo(correo: string): Observable<any> 

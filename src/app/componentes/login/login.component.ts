@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '../../otros/angularmaterial/angularmaterial.module';
 import { UsuariosService } from '../../servicios/usuarios/usuarios.service';
-
-
 import { Router } from '@angular/router';
 import { DatoscompartidosService } from '../../servicios/datoscompartidos/datoscompartidos.service';
+
+import { Usuario } from '../../interfaces/usuario';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -16,19 +17,28 @@ import { DatoscompartidosService } from '../../servicios/datoscompartidos/datosc
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent
+{
   public formulario!: FormGroup;
   private fb = inject(FormBuilder);
   private servicio = inject(UsuariosService);
   private router = inject(Router);
   private datosCompartidos = inject(DatoscompartidosService);
+  private subscripcion:Subscription = new Subscription();
+  
 
   public correoNoExiste: boolean = false;
   public contrasenyaErronea: boolean = false;
 
 
-  ngOnInit(): void {
+  ngOnInit(): void 
+  {
     this.crearFormulario();
+  }
+
+  ngOnDestroy(): void 
+  {
+    this.subscripcion.unsubscribe();
   }
 
   crearFormulario() {
@@ -46,8 +56,11 @@ export class LoginComponent {
     this.correoNoExiste = false;
     this.contrasenyaErronea = false;
 
-    if (this.formulario.valid) {
-      const data = {
+    if (this.formulario.valid) 
+    {
+      const usuarioALoguearse: Usuario = 
+      {
+        id: null,
         nombre: null,
         contrasenya: this.formulario.get('contrasenya')?.value,
         correo: this.formulario.get('correo')?.value,
@@ -55,29 +68,33 @@ export class LoginComponent {
         esAdmin: null
       };
 
-      this.servicio.comprobarLogIn(data)
-        .subscribe(
-          (response) => {
+
+      const observerALogin =
+      {
+        next: (response:any) =>
+        {
             if (response.respuesta === "LogIn correcto.") 
             { 
-              this.datosCompartidos.setIdUsuario(response.usuarios[0].id);
-              this.datosCompartidos.setNombreUsuario(response.usuarios[0].nombre);
-              this.datosCompartidos.setContrasenyaUsuario(response.usuarios[0].contrasenya);
-              this.datosCompartidos.setEsAdminUsuario(response.usuarios[0].esAdmin);
+              this.datosCompartidos.setUsuario(response.usuarios[0]);
               this.router.navigate(['/bandejadeentrada']);
 
             } 
-            else if (response.respuesta === "El usuario no existe.") {
+            else if (response.respuesta === "El usuario no existe.") 
+            {
               this.correoNoExiste = true;
-            } else if (response.respuesta === "LogIn incorrecto.") {
+            } 
+            else if (response.respuesta === "LogIn incorrecto.") 
+            {
               this.contrasenyaErronea = true;
             }
-          },
-          (error) => {
- 
-            this.correoNoExiste = true; // O alguna otra lógica de manejo de errores
-          }
-        );
+        },
+        error: (error:any) => 
+        {      
+          this.correoNoExiste = true; // O alguna otra lógica de manejo de errores
+        }
+
+      }
+      this.subscripcion=this.servicio.comprobarLogIn(usuarioALoguearse).subscribe(observerALogin);
         
     }
   }

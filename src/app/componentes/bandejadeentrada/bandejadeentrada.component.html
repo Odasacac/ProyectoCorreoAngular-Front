@@ -27,7 +27,7 @@
               <ng-container matColumnDef="acciones">
                 <th mat-header-cell *matHeaderCellDef class="mat-column-acciones"> Acciones </th>
                 <td mat-cell *matCellDef="let element" class="mat-column-acciones">
-                  <button mat-button (click)="leerMensaje(element.nombreEmisor, element.fechaEnvio, element.contenido, element.correoEmisor)"> <mat-icon>visibility</mat-icon></button>
+                  <button mat-button (click)="leerMensaje(element)"> <mat-icon>visibility</mat-icon></button>
                   <button mat-button (click)="eliminarMensaje(element)"> <mat-icon>delete</mat-icon></button>
                 </td>
               </ng-container>
@@ -39,8 +39,7 @@
             
           </div>
           
-          </div>
-          
+          </div>         
 </div>
 
 <div *ngIf="!usuarioLogueado" class="contenedor">

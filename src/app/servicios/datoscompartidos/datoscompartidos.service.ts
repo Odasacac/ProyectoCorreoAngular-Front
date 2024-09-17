@@ -1,60 +1,39 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Usuario } from '../../interfaces/usuario';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DatoscompartidosService {
+export class DatoscompartidosService 
+{
 
-  private idUsuarioSubject = new BehaviorSubject<number | null>(null);
-  idUsuario$ = this.idUsuarioSubject.asObservable();
-  setIdUsuario(id: number) 
+  private usuarioInicial: Usuario = 
   {
-    this.idUsuarioSubject.next(id);
-  }
-  getIdUsuario(): number | null 
-  {
-    return this.idUsuarioSubject.value;
-  }
+    id: 0,
+    nombre: '',
+    contrasenya: '',
+    correo: '',
+    fechaCreacion: new Date().toISOString(),
+    esAdmin: false
+  };
 
+  private usuarioSubject = new BehaviorSubject<Usuario>(this.usuarioInicial);
   
-  private nombreUsuarioSubject = new BehaviorSubject<string | null>(null);
-  nombreUsuario$ = this.nombreUsuarioSubject.asObservable();
-  setNombreUsuario(nombre: string) 
+  usuario$ = this.usuarioSubject.asObservable();
+
+  setUsuario(usuario: Usuario) 
   {
-    this.nombreUsuarioSubject.next(nombre);
+    this.usuarioSubject.next(usuario);
   }
-  getNombreUsuario(): string | null 
+  getUsuario(): Usuario | null 
   {
-    return this.nombreUsuarioSubject.value;
+    return this.usuarioSubject.value;
   }
-
-
-  private contrasenyaUsuarioSubject = new BehaviorSubject<string | null>(null);
-  contrasenyaUsuario$ = this.contrasenyaUsuarioSubject.asObservable();
-  setContrasenyaUsuario(contrasenya: string) 
+  resetUsuario()
   {
-    this.contrasenyaUsuarioSubject.next(contrasenya);
+    this.setUsuario(this.usuarioInicial);
   }
-  getContrasenyaUsuario(): string | null 
-  {
-    return this.contrasenyaUsuarioSubject.value;
-  }
-
-
-  private esAdminUsuarioSubject = new BehaviorSubject<boolean | null>(null);
-  esAdminUsuario$ = this.esAdminUsuarioSubject.asObservable();
-  setEsAdminUsuario(esAdmin: boolean) 
-  {
-    this.esAdminUsuarioSubject.next(esAdmin);
-  }
-  getEsAdminUsuario(): boolean | null 
-  {
-    return this.esAdminUsuarioSubject.value;
-  }
-
-
-
 
 
 }

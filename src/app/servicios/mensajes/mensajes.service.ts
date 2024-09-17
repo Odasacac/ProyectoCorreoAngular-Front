@@ -12,7 +12,7 @@ export class MensajesService
   private base_url: string = "http://localhost:8080/api/v1";
 
   
-  mostrarBandejaEntrada(id: number): Observable<any> 
+  buscarMensajePorReceptorId(id: number): Observable<any> 
   {
     const endpoint = `${this.base_url}/mensajesrecibidos/${id}`;
     return this.http.get<any>(endpoint);
