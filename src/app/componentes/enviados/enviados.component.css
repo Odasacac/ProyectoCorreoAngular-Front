@@ -12,20 +12,15 @@
     margin-bottom: 24px; /* Agrega espacio debajo del título */
   }
 
-  .botones-container {
+  .botones-container-inline {
     display: flex;
     justify-content: center; /* Centra los botones horizontalmente */
     gap: 10px; /* Espacio entre los botones */
   }
   
   .botonEscribir {
-    margin: 10px 0; /* Márgenes verticales */
+    margin: 0; /* Elimina los márgenes adicionales */
   }
-  
-  .boton-redactar {
-    text-align: center; /* Centra el botón de redactar horizontalmente */
-  }
-  
   
   .mat-elevation-z8 {
     margin: 0 auto; /* Centra la tabla horizontalmente */

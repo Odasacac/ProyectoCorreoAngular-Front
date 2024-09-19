@@ -18,6 +18,12 @@ export class MensajesService
     return this.http.get<any>(endpoint);
   }
 
+  buscarMensajePorEmisorId(id: number): Observable<any> 
+  {
+    const endpoint = `${this.base_url}/mensajesenviados/${id}`;
+    return this.http.get<any>(endpoint);
+  }
+
     enviarAPapelera (id:number): Observable<any>
     {
       const endpoint = `${this.base_url}/mensajes/${id}`;

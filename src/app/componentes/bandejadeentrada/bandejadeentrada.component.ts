@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { DatoscompartidosService } from '../../servicios/datoscompartidos/datoscompartidos.service';
-import { forkJoin, map, Subscription, switchMap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Usuario } from '../../interfaces/usuario';
@@ -83,7 +83,6 @@ export class BandejadeentradaComponent implements OnInit, OnDestroy
 
    leerMensaje(mensaje: any)
   {
-    //No le llega ni el nombre ni el correo
     const nombreEmisor = mensaje.nombreEmisor;
     const fechaEnvio = mensaje.fechaEnvio;
     const contenido = mensaje.contenido;
@@ -97,27 +96,9 @@ export class BandejadeentradaComponent implements OnInit, OnDestroy
     this.actualizarListaDeMensajes();
   }
 
-
-
-
-  eliminarMensaje(mensaje: any) 
-  {   
-
-    const observableEliminar =
-    {
-      next: (respuesta:any) => 
-      {
-        this.actualizarListaDeMensajes();
-      },
-      error: (error: any) => 
-      {
-        this.actualizarListaDeMensajes();  
-        console.log("Error, mensaje no eliminado");
-        
-      }
-    }
-
-    this.mensajesService.enviarAPapelera(mensaje.id).subscribe(observableEliminar);
+  irAEnviados()
+  {
+    this.router.navigate(['/enviados']);
   }
 
   actualizarListaDeMensajes() 

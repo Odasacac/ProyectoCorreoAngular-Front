@@ -1,0 +1,57 @@
+<div *ngIf="usuarioLogueado">
+
+    <h2 class="form-title">Mensajes enviados - <button mat-raised-button (click)="refresh()"> <mat-icon>refresh</mat-icon></button></h2>
+    
+    <div class="botones-container-inline">
+      <button mat-raised-button class="botonEscribir" (click)="irABandejaDeEntrada()"> 
+        <mat-icon>inbox</mat-icon> Ir a bandeja de entrada
+      </button>
+      
+      <button mat-raised-button class="botonEscribir"> 
+        <mat-icon>delete_forever</mat-icon> Ir a papelera*
+      </button>
+    </div>
+    
+
+  
+    <div>
+      <br>
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" class="mat-table">
+
+        
+          <!-- Fecha Envio Column -->
+          <ng-container matColumnDef="fechaEnvio">
+            <th mat-header-cell *matHeaderCellDef class="mat-column-fechaEnvio"> Fecha Envio </th>
+            <td mat-cell *matCellDef="let element" class="mat-column-fechaEnvio"> {{element.fechaEnvio | date:'dd/MM/yyyy - HH:mm'}} </td>
+          </ng-container>
+        
+          <!-- Nombre Emisor Column -->
+          <ng-container matColumnDef="nombreReceptor">
+            <th mat-header-cell *matHeaderCellDef class="mat-column-nombreEmisor"> Receptor </th>
+            <td mat-cell *matCellDef="let element" class="mat-column-nombreEmisor"> {{element.nombreReceptor}} </td>
+          </ng-container>
+        
+          <!-- Acciones Column -->
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef class="mat-column-acciones"> Acciones </th>
+            <td mat-cell *matCellDef="let element" class="mat-column-acciones">
+              <button mat-button (click)="leerMensaje(element)"> <mat-icon>visibility</mat-icon></button>
+              <button mat-button> <mat-icon>delete</mat-icon>*</button>
+            </td>
+          </ng-container>
+        
+          <!-- Header and Row Definitions -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        
+      </div>
+      
+      </div>         
+</div>
+
+<div *ngIf="!usuarioLogueado" class="contenedor">
+<label mat-label>Accede con tus credenciales para visualizar las funcionalidades.</label>
+<button mat-raised-button class="mb-3 boton" color="primary" (click)="goToLogIn()">Volver a Iniciar Sesión</button>
+</div>

@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Mensaje enviado a {{nombre}}</h2>
+<h3 mat-dialog-content>Correo: {{correo}}</h3>
+<h3 mat-dialog-content>Enviado el: {{fecha | date:'dd/MM/yyyy - HH:mm'}}</h3>
+<div mat-dialog-content>Mensaje: </div>
+<div mat-dialog-content class="mensaje-content">{{contenido}}</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="closeDialog()">Cerrar</button>
+</div>
