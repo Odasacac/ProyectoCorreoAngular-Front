@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DatoscompartidosService } from '../../servicios/datoscompartidos/datoscompartidos.service';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -14,6 +14,7 @@ import { UsuariosService } from '../../servicios/usuarios/usuarios.service';
 import { LeerMensajesComponent } from '../../otros/leermensajes/leermensajes.component';
 import { MatDialog } from '@angular/material/dialog';
 import { RedactarMensajesComponent } from '../../otros/redactarmensajes/redactarmensajes.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-bandejadeentrada',
@@ -40,7 +41,7 @@ export class BandejadeentradaComponent implements OnInit, OnDestroy
 
   public displayedColumns: string[] = ['fechaEnvio', 'nombreEmisor', 'acciones'];
   public dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
-
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit(): void 
   {
@@ -67,6 +68,7 @@ export class BandejadeentradaComponent implements OnInit, OnDestroy
       }
     }
     this.subscripcion=this.datosCompartidos.usuario$.subscribe(usuarioObserver);
+    this.dataSource.paginator = this.paginator;
   }
 
   ngOnDestroy(): void 

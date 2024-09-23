@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { DatoscompartidosService } from '../../servicios/datoscompartidos/datoscompartidos.service';
 import { Usuario } from '../../interfaces/usuario';
 import { Subscription } from 'rxjs';
@@ -11,6 +11,7 @@ import { MaterialModule } from '../../otros/angularmaterial/angularmaterial.modu
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { LeermensajesenviadosComponent } from '../../otros/leermensajesenviados/leermensajesenviados.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-enviados',
@@ -33,6 +34,7 @@ export class EnviadosComponent
 
   public dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
   public displayedColumns: string[] = ['fechaEnvio', 'nombreReceptor', 'acciones'];
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit(): void 
   {
@@ -84,6 +86,7 @@ export class EnviadosComponent
     }
 
     this.mensajesService.enviarAPapelera(mensaje.id).subscribe(observableEliminar);
+    this.dataSource.paginator = this.paginator;
   }
 
 
