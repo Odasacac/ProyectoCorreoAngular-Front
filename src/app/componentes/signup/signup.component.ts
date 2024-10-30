@@ -4,7 +4,7 @@ import { UsuariosService } from '../../servicios/usuarios/usuarios.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../otros/angularmaterial/angularmaterial.module';
-import { Usuario } from '../../interfaces/usuario';
+import { UsuarioParaSignUp } from '../../interfaces/usuario-signup';
 import { Subscription } from 'rxjs';
 
 
@@ -70,14 +70,11 @@ export class SignupComponent
       else
       {
 
-        const usuarioAAlmacenar: Usuario = 
+        const usuarioAAlmacenar: UsuarioParaSignUp = 
         {
-          id: null,
           nombre: this.formulario.get('nombre')?.value,
           correo: this.formulario.get('correo')?.value,
           contrasenya: this.formulario.get('contrasenya')?.value,
-          fechaCreacion: fechaActual.toISOString(),
-          esAdmin: false
         };
 
         const usuarioObserver = 

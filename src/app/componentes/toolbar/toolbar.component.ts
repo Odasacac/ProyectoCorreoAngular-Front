@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { Usuario } from '../../interfaces/usuario';
+import { Usuario } from '../../interfaces/usuario-general';
 
 @Component({
   selector: 'app-toolbar',

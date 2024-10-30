@@ -6,7 +6,7 @@ import { UsuariosService } from '../../servicios/usuarios/usuarios.service';
 import { Router } from '@angular/router';
 import { DatoscompartidosService } from '../../servicios/datoscompartidos/datoscompartidos.service';
 
-import { Usuario } from '../../interfaces/usuario';
+import { UsuarioParaLogIn } from '../../interfaces/usuario-login';
 import { Subscription } from 'rxjs';
 
 
@@ -58,14 +58,12 @@ export class LoginComponent
 
     if (this.formulario.valid) 
     {
-      const usuarioALoguearse: Usuario = 
+      const usuarioALoguearse: UsuarioParaLogIn = 
       {
-        id: null,
-        nombre: null,
+   
         contrasenya: this.formulario.get('contrasenya')?.value,
         correo: this.formulario.get('correo')?.value,
-        fechaCreacion: null,
-        esAdmin: null
+
       };
 
 

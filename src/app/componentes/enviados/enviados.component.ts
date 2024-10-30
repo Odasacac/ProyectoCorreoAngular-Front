@@ -1,6 +1,6 @@
 import { Component, inject, ViewChild } from '@angular/core';
 import { DatoscompartidosService } from '../../servicios/datoscompartidos/datoscompartidos.service';
-import { Usuario } from '../../interfaces/usuario';
+import { Usuario } from '../../interfaces/usuario-general';
 import { Subscription } from 'rxjs';
 import { MensajesService } from '../../servicios/mensajes/mensajes.service';
 import { UsuariosService } from '../../servicios/usuarios/usuarios.service';

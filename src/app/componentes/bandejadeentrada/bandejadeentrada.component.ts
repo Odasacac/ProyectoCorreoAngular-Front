@@ -3,7 +3,7 @@ import { DatoscompartidosService } from '../../servicios/datoscompartidos/datosc
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { Usuario } from '../../interfaces/usuario';
+import { Usuario } from '../../interfaces/usuario-general';
 import { MensajeBE } from '../../interfaces/mensaje-bandeja-entrada';
 
 
